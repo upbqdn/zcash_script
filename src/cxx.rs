@@ -10,11 +10,110 @@
 #![allow(clippy::unwrap_or_default)]
 
 // Use the generated C++ bindings
+#[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
+
+// Dummy definitions for no_std
+#[cfg(not(feature = "std"))]
+pub type ScriptError = i32;
+
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_OK: ScriptError = 0;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_EVAL_FALSE: ScriptError = 1;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_UNKNOWN_ERROR: ScriptError = 2;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_OP_RETURN: ScriptError = 3;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_SCRIPT_SIZE: ScriptError = 4;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_PUSH_SIZE: ScriptError = 5;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_OP_COUNT: ScriptError = 6;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_STACK_SIZE: ScriptError = 7;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_SIG_COUNT: ScriptError = 8;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_PUBKEY_COUNT: ScriptError = 9;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_VERIFY: ScriptError = 10;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_EQUALVERIFY: ScriptError = 11;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_CHECKMULTISIGVERIFY: ScriptError = 12;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_CHECKSIGVERIFY: ScriptError = 13;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_NUMEQUALVERIFY: ScriptError = 14;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_BAD_OPCODE: ScriptError = 15;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_DISABLED_OPCODE: ScriptError = 16;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_INVALID_STACK_OPERATION: ScriptError = 17;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_INVALID_ALTSTACK_OPERATION: ScriptError = 18;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_UNBALANCED_CONDITIONAL: ScriptError = 19;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_NEGATIVE_LOCKTIME: ScriptError = 20;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_UNSATISFIED_LOCKTIME: ScriptError = 21;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_SIG_HASHTYPE: ScriptError = 22;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_SIG_DER: ScriptError = 23;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_MINIMALDATA: ScriptError = 24;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_SIG_PUSHONLY: ScriptError = 25;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_SIG_HIGH_S: ScriptError = 26;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_SIG_NULLDUMMY: ScriptError = 27;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_PUBKEYTYPE: ScriptError = 28;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_CLEANSTACK: ScriptError = 29;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_DISCOURAGE_UPGRADABLE_NOPS: ScriptError = 30;
+#[cfg(not(feature = "std"))]
+pub const ScriptError_t_SCRIPT_ERR_VERIFY_SCRIPT: ScriptError = 31;
+
+// Dummy functions for no_std
+#[cfg(not(feature = "std"))]
+pub unsafe fn zcash_script_verify_callback(
+    _ctx: *const core::ffi::c_void,
+    _cb: Option<extern "C" fn(*mut u8, u32, *const core::ffi::c_void, *const u8, u32, i32)>,
+    _lock_time: i64,
+    _is_final: i32,
+    _script_pub_key: *const u8,
+    _script_pub_key_len: u32,
+    _script_sig: *const u8,
+    _script_sig_len: u32,
+    _flags: u32,
+    _err: *mut ScriptError,
+) -> i32 {
+    0 // Always return false in no_std mode since we can't call C++
+}
+
+#[cfg(not(feature = "std"))]
+pub unsafe fn zcash_script_legacy_sigop_count_script(
+    _script_pub_key: *const u8,
+    _script_pub_key_len: u32,
+) -> u32 {
+    0 // Return 0 in no_std mode
+}
 #[cfg(test)]
 mod tests {
+    #[cfg(feature = "std")]
     use std::ffi::{c_int, c_uint, c_void};
+    #[cfg(not(feature = "std"))]
+    use core::ffi::{c_int, c_uint, c_void};
 
+    use alloc::vec::Vec;
     use hex::FromHex;
 
     lazy_static::lazy_static! {

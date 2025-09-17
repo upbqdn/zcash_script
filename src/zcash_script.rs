@@ -1,3 +1,4 @@
+use alloc::{vec, vec::Vec};
 use thiserror::Error;
 
 use crate::{

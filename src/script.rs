@@ -1,6 +1,11 @@
 //! Managing sequences of opcodes.
 
+#[cfg(feature = "std")]
 use std::iter;
+#[cfg(not(feature = "std"))]
+use core::iter;
+
+use alloc::{vec, vec::Vec};
 
 use thiserror::Error;
 

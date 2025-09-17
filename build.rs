@@ -53,7 +53,10 @@ fn bindgen_headers() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    bindgen_headers()?;
+    // Only generate bindings when std feature is enabled
+    if cfg!(feature = "std") {
+        bindgen_headers()?;
+    }
 
     let target = env::var("TARGET").expect("TARGET was not set");
     let mut base_config = cc::Build::new();

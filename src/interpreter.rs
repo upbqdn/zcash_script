@@ -1,6 +1,14 @@
 //! Execution of opcodes
 
+use alloc::{vec, vec::Vec};
+#[cfg(feature = "std")]
 use std::{
+    cmp::{max, min},
+    num::TryFromIntError,
+    slice::Iter,
+};
+#[cfg(not(feature = "std"))]
+use core::{
     cmp::{max, min},
     num::TryFromIntError,
     slice::Iter,

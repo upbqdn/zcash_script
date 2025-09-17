@@ -6,6 +6,7 @@
 //! - `WITNESS`.
 
 use core::iter;
+use alloc::{vec, vec::Vec};
 
 use bounded_vec::EmptyBoundedVec;
 use hex::{FromHex, FromHexError};
