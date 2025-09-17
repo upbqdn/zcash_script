@@ -1,4 +1,31 @@
 //! Zcash transparent script implementations.
+//!
+//! This crate provides both `std` and `no_std` compatible implementations
+//! of Zcash script verification.
+//!
+//! ## Features
+//!
+//! - **Default (std)**: Includes full FFI bindings to the C++ zcash_script library
+//! - **no_std**: Provides a pure Rust implementation without C++ dependencies
+//!
+//! ## Usage
+//!
+//! ### With std (default)
+//!
+//! ```toml
+//! [dependencies]
+//! zcash_script = "0.3"
+//! ```
+//!
+//! ### With no_std
+//!
+//! ```toml
+//! [dependencies]
+//! zcash_script = { version = "0.3", default-features = false }
+//! ```
+//!
+//! In `no_std` mode, only the pure Rust interpreter is fully functional.
+//! The `CxxInterpreter` will provide safe defaults but won't perform actual C++ verification.
 
 #![doc(html_logo_url = "https://www.zfnd.org/images/zebra-icon.png")]
 #![doc(html_root_url = "https://docs.rs/zcash_script/0.3.2")]

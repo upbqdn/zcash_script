@@ -13,6 +13,36 @@
 
 Rust bindings to the ECC's `zcash_script` C++ library.
 
+### Features
+
+This crate supports both `std` and `no_std` environments:
+
+- **Default (std)**: Includes full FFI bindings to the C++ zcash_script library
+- **no_std**: Provides a pure Rust implementation without C++ dependencies
+
+#### Using with no_std
+
+To use this crate in a `no_std` environment, disable default features:
+
+```toml
+[dependencies]
+zcash_script = { version = "0.3", default-features = false }
+```
+
+In `no_std` mode:
+- Only the pure Rust interpreter is available (`rust_interpreter` function)
+- C++ FFI functionality (`CxxInterpreter`) returns safe defaults
+- Requires the `alloc` crate for `Vec` and other collections
+
+#### Using with std (default)
+
+```toml
+[dependencies]
+zcash_script = "0.3"
+```
+
+This provides both the Rust interpreter and C++ FFI bindings.
+
 ### Developing
 
 This crate works by manually including the `zcash_script` .h and .cpp files,
